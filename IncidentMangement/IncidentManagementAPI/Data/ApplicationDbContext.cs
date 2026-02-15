@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using IncidentManagementAPI.Models;
 
-namespace IncidentManagementAPI
+namespace IncidentManagementAPI.Data
 {
     public class ApplicationDbContext : DbContext
     {

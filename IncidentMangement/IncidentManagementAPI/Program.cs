@@ -1,4 +1,4 @@
-using IncidentManagementAPI;
+using IncidentManagementAPI.Data;
 using IncidentManagementAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
