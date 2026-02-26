@@ -1,5 +1,6 @@
-﻿using IncidentManagement.Auth.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using IncidentManagement.Auth.DTOs;
+using IncidentManagement.Auth.Interfaces;
+using IncidentManagement.Auth.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IncidentManagement.Auth.Controllers
@@ -16,9 +17,9 @@ namespace IncidentManagement.Auth.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string username, string password)
+        public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
         {
-            var token = await _authService.Register(username, password);
+            var token = await _authService.Register(request.Username, request.Password);
 
             if (token == null)
                 return BadRequest("User already exists");
@@ -27,9 +28,9 @@ namespace IncidentManagement.Auth.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
         {
-            var token = await _authService.Login(username, password);
+            var token = await _authService.Login(request.Username, request.Password);
 
             if (token == null)
                 return Unauthorized();
