@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IncidentManagementAPI.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TicketsController : ControllerBase
@@ -16,14 +15,14 @@ namespace IncidentManagementAPI.Controllers
         {
             _ticketService = ticketService;
         }
-
+        [Authorize(Roles = "Engineer,Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var tickets = await _ticketService.GetAllAsync();
             return Ok(tickets);
         }
-
+        [Authorize(Roles = "Engineer,Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -34,14 +33,14 @@ namespace IncidentManagementAPI.Controllers
 
             return Ok(ticket);
         }
-
+        [Authorize(Roles = "User,Engineer,Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(Ticket ticket)
         {
             var created = await _ticketService.CreateAsync(ticket);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
-
+        [Authorize(Roles = "Engineer,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Ticket ticket)
         {
@@ -52,7 +51,7 @@ namespace IncidentManagementAPI.Controllers
 
             return NoContent();
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

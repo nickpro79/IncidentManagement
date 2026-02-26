@@ -19,7 +19,7 @@ namespace IncidentManagement.Auth.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] AuthRequestDto request)
         {
-            var token = await _authService.Register(request.Username, request.Password);
+            var token = await _authService.Register(request.Username, request.Password,request.Role);
 
             if (token == null)
                 return BadRequest("User already exists");

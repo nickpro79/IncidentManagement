@@ -20,7 +20,7 @@ namespace IncidentManagement.Auth.Services
             _config = config;
         }
 
-        public async Task<string?> Register(string username, string password)
+        public async Task<string?> Register(string username, string password, string? role)
         {
             if (await _context.Users.AnyAsync(x => x.Username == username))
                 return null;
@@ -28,13 +28,15 @@ namespace IncidentManagement.Auth.Services
             var user = new User
             {
                 Username = username,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
+                Role = string.IsNullOrEmpty(role) ? "User" : role
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return GenerateJwtToken(user);
+
         }
 
         public async Task<string?> Login(string username, string password)
