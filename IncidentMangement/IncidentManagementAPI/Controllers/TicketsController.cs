@@ -1,9 +1,11 @@
 ﻿using IncidentManagementAPI.Models;
 using IncidentManagementAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IncidentManagementAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class TicketsController : ControllerBase
