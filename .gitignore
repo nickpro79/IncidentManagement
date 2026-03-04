@@ -274,7 +274,48 @@ ServiceFabricBackup/
 *- [Bb]ackup.rdl
 *- [Bb]ackup ([0-9]).rdl
 *- [Bb]ackup ([0-9][0-9]).rdl
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+*.dbmdl
+*.jfm
+*.VC.db
+*.VC.opendb
 
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.*.Local.json
+
+# Logs
+logs/
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# EF Core
+Migrations/*/bin/
+Migrations/*/obj/
+
+# SQL LocalDB
+*.mdf
+*.ldf
+
+# Docker
+docker-compose.override.yml
+
+# Node (if any in backend)
+node_modules/
 # Microsoft Fakes
 FakesAssemblies/
 
