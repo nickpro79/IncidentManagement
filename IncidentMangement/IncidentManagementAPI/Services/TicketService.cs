@@ -1,6 +1,8 @@
 ﻿using IncidentManagementAPI.Data;
+using IncidentManagementAPI.Hubs;
 using IncidentManagementAPI.Models;
 using IncidentManagementAPI.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace IncidentManagementAPI.Services
@@ -8,10 +10,12 @@ namespace IncidentManagementAPI.Services
     public class TicketService : ITicketService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<TicketHub> _hub;
 
-        public TicketService(ApplicationDbContext context)
+        public TicketService(ApplicationDbContext context, IHubContext<TicketHub> hub)
         {
             _context = context;
+            _hub = hub;
         }
 
         public async Task<List<Ticket>> GetAllAsync()
@@ -28,6 +32,13 @@ namespace IncidentManagementAPI.Services
         {
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
+
+            await _hub.Clients.Group("Engineer")
+                .SendAsync("TicketCreated", ticket);
+
+            await _hub.Clients.Group("Admin")
+                .SendAsync("TicketCreated", ticket);
+
             return ticket;
         }
 
@@ -44,6 +55,17 @@ namespace IncidentManagementAPI.Services
             existing.Status = updatedTicket.Status;
 
             await _context.SaveChangesAsync();
+
+            await _hub.Clients.Group("User")
+                .SendAsync("TicketUpdated", existing);
+
+            await _hub.Clients.Group("Engineer")
+                .SendAsync("TicketUpdated", existing);
+
+            await _hub.Clients.Group("Admin")
+                .SendAsync("TicketUpdated", existing);
+
+
             return true;
         }
 
@@ -56,6 +78,11 @@ namespace IncidentManagementAPI.Services
 
             _context.Tickets.Remove(ticket);
             await _context.SaveChangesAsync();
+
+
+            await _hub.Clients.Group("Admin")
+                .SendAsync("TicketDeleted", id);
+
             return true;
         }
     }
