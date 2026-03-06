@@ -14,3 +14,10 @@ body {
   font-family: 'Poppins', sans-serif;
   background-color: var(--background);
 }
+.main{
+  margin-left:220px;
+  margin-top:60px;
+  padding:30px;
+  min-height:calc(100vh - 60px);
+  background:#f1f5f9;
+}
